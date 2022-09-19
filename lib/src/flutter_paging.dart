@@ -122,7 +122,7 @@ class _PagingState extends State<Paging> {
                       widget.onSelect(selectedPage + 1);
                       if ((selectedPage - 1) % 4 == 0 && selectedPage != 1) {
                         _controller.animateTo(
-                            (selectedPage / 4) * ((size) / 5.6),
+                            ((selectedPage - 1) / 4) * ((size) / 5.6),
                             duration: const Duration(milliseconds: 200),
                             curve: Curves.linear);
                       }
