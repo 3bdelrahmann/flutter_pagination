@@ -1,6 +1,6 @@
 A simple fully customizable page number indecator for flutter.
 
-![image](images/example1.jpg)
+![image](images/example1.PNG)
 
 ## Features
 
