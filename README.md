@@ -5,15 +5,16 @@ A simple fully customizable page number indecator for flutter.
 ## Features
 
 - Set pages count.
-- Do Something on selection.
-- Change the selection color.
+- Do something on selection.
+- Change colors.
+- Change size to fit your screen.
 
 ## Usage
 
 
 ```dart
 import 'package:flutter/material.dart';
-import 'package:flutter_paging/flutter_paging.dart';
+import 'package:flutter_paging/flutter_pagination.dart';
 
 void main() {
   runApp(const MyApp());
@@ -48,7 +49,7 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
-          child: Paging(
+          child: FlutterPagination(
             onSelect: (int pageNumber) {
               ///Todo: Do something
             },

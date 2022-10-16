@@ -1,6 +1,6 @@
 name: flutter_paging
 description: A simple page number indicator for flutter.
-version: 0.0.2
+version: 0.1.1
 homepage: https://github.com/3bdelrahmann/flutter_paging
 
 environment:
