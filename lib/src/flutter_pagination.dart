@@ -48,31 +48,29 @@ class _FlutterPaginationState extends State<FlutterPagination> {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           ///Last index button
-          IconButton(
-              padding: EdgeInsets.zero,
-              hoverColor: (selectedPage > 1)
-                  ? Theme.of(context).hoverColor
-                  : Colors.transparent,
-              onPressed: (selectedPage > 1)
-                  ? () {
-                      setState(() {
-                        selectedPage -= 1;
-                      });
-                      widget.onSelectCallback(selectedPage);
+          AbsorbPointer(
+            absorbing: selectedPage <= 1,
+            child: IconButton(
+                padding: EdgeInsets.zero,
+                hoverColor: Theme.of(context).hoverColor,
+                onPressed: () {
+                  setState(() {
+                    selectedPage -= 1;
+                  });
+                  widget.onSelectCallback(selectedPage);
 
-                      _controller.animateTo(
-                          ((selectedPage - 1) / itemCount) *
-                              _transformSize(259.9),
-                          duration: const Duration(milliseconds: 200),
-                          curve: Curves.linear);
-                    }
-                  : () {},
-              icon: Icon(
-                Icons.arrow_back_ios_outlined,
-                color: (selectedPage > 1)
-                    ? arrowsColor
-                    : Theme.of(context).disabledColor,
-              )),
+                  _controller.animateTo(
+                      ((selectedPage - 1) / itemCount) * _transformSize(259.9),
+                      duration: const Duration(milliseconds: 0),
+                      curve: Curves.linear);
+                },
+                icon: Icon(
+                  Icons.arrow_back_ios_outlined,
+                  color: (selectedPage > 1)
+                      ? arrowsColor
+                      : Theme.of(context).disabledColor,
+                )),
+          ),
 
           /// Numbers row
 
@@ -114,31 +112,29 @@ class _FlutterPaginationState extends State<FlutterPagination> {
               )),
 
           ///Next index button
-          IconButton(
-            padding: EdgeInsets.zero,
-            hoverColor: (selectedPage < widget.listCount)
-                ? Theme.of(context).hoverColor
-                : Colors.transparent,
-            onPressed: (selectedPage < widget.listCount)
-                ? () {
-                    setState(() {
-                      selectedPage += 1;
-                    });
-                    widget.onSelectCallback(selectedPage);
-                    if ((selectedPage - 1) % itemCount == 0) {
-                      _controller.animateTo(
-                          ((selectedPage - 1) / itemCount) *
-                              _transformSize(259.9),
-                          duration: const Duration(milliseconds: 200),
-                          curve: Curves.linear);
-                    }
-                  }
-                : () {},
-            icon: Icon(
-              Icons.arrow_forward_ios_outlined,
-              color: (selectedPage < widget.listCount)
-                  ? arrowsColor
-                  : Theme.of(context).disabledColor,
+          AbsorbPointer(
+            absorbing: selectedPage >= widget.listCount,
+            child: IconButton(
+              padding: EdgeInsets.zero,
+              hoverColor: Theme.of(context).hoverColor,
+              onPressed: () {
+                setState(() {
+                  selectedPage += 1;
+                });
+                widget.onSelectCallback(selectedPage);
+                if ((selectedPage - 1) % itemCount == 0) {
+                  _controller.animateTo(
+                      ((selectedPage - 1) / itemCount) * _transformSize(259.9),
+                      duration: const Duration(milliseconds: 0),
+                      curve: Curves.linear);
+                }
+              },
+              icon: Icon(
+                Icons.arrow_forward_ios_outlined,
+                color: (selectedPage < widget.listCount)
+                    ? arrowsColor
+                    : Theme.of(context).disabledColor,
+              ),
             ),
           ),
         ],
