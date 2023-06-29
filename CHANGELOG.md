@@ -17,3 +17,7 @@ New designs
 ## 0.1.1
 
 Fix naming and scroll issues
+
+## 0.1.2
+
+Optimize performance
