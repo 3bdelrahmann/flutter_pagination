@@ -61,7 +61,7 @@ class _FlutterPaginationState extends State<FlutterPagination> {
 
                   _controller.animateTo(
                       ((selectedPage - 1) / itemCount) * _transformSize(259.9),
-                      duration: const Duration(milliseconds: 0),
+                      duration: const Duration(microseconds: 1),
                       curve: Curves.linear);
                 },
                 icon: Icon(
@@ -125,7 +125,7 @@ class _FlutterPaginationState extends State<FlutterPagination> {
                 if ((selectedPage - 1) % itemCount == 0) {
                   _controller.animateTo(
                       ((selectedPage - 1) / itemCount) * _transformSize(259.9),
-                      duration: const Duration(milliseconds: 0),
+                      duration: const Duration(microseconds: 1),
                       curve: Curves.linear);
                 }
               },

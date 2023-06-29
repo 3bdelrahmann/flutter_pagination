@@ -50,10 +50,10 @@ class _MyHomePageState extends State<MyHomePage> {
     return Scaffold(
       body: Center(
           child: FlutterPagination(
-            onSelect: (int pageNumber) {
+            onSelectCallback: (int pageNumber) {
               ///Todo: Do something
             },
-            pagesCount: 20,
+            listCount: 20,
           )),
     );
   }
