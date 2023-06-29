@@ -22,8 +22,7 @@ class FlutterPagination extends StatefulWidget {
   State<FlutterPagination> createState() => _FlutterPaginationState();
 }
 
-class _FlutterPaginationState extends State<FlutterPagination>
-    with AutomaticKeepAliveClientMixin {
+class _FlutterPaginationState extends State<FlutterPagination> {
   final ScrollController _controller = ScrollController();
 
   int selectedPage = 1;
@@ -33,11 +32,7 @@ class _FlutterPaginationState extends State<FlutterPagination>
   }
 
   @override
-  bool get wantKeepAlive => true;
-
-  @override
   Widget build(BuildContext context) {
-    super.build(context);
     int itemCount = 5;
 
     Color selectionColor =
@@ -47,7 +42,6 @@ class _FlutterPaginationState extends State<FlutterPagination>
         Theme.of(context).primaryColor.withOpacity(0.3);
 
     Color arrowsColor = widget.arrowsColor ?? Theme.of(context).primaryColor;
-
     return SizedBox(
       height: _transformSize(44.0),
       child: Row(
@@ -57,67 +51,65 @@ class _FlutterPaginationState extends State<FlutterPagination>
           AbsorbPointer(
             absorbing: selectedPage <= 1,
             child: IconButton(
-              padding: EdgeInsets.zero,
-              hoverColor: Theme.of(context).hoverColor,
-              onPressed: () {
-                setState(() {
-                  selectedPage -= 1;
-                });
-                widget.onSelectCallback(selectedPage);
+                padding: EdgeInsets.zero,
+                hoverColor: Theme.of(context).hoverColor,
+                onPressed: () {
+                  setState(() {
+                    selectedPage -= 1;
+                  });
+                  widget.onSelectCallback(selectedPage);
 
-                _controller.animateTo(
-                  ((selectedPage - 1) / itemCount) * _transformSize(259.9),
-                  duration: const Duration(milliseconds: 0),
-                  curve: Curves.linear,
-                );
-              },
-              icon: Icon(
-                Icons.arrow_back_ios_outlined,
-                color: (selectedPage > 1)
-                    ? arrowsColor
-                    : Theme.of(context).disabledColor,
-              ),
-            ),
+                  _controller.animateTo(
+                      ((selectedPage - 1) / itemCount) * _transformSize(259.9),
+                      duration: const Duration(milliseconds: 0),
+                      curve: Curves.linear);
+                },
+                icon: Icon(
+                  Icons.arrow_back_ios_outlined,
+                  color: (selectedPage > 1)
+                      ? arrowsColor
+                      : Theme.of(context).disabledColor,
+                )),
           ),
 
           /// Numbers row
+
           Container(
-            width: widget.listCount > itemCount ? _transformSize(290.0) : null,
-            padding: EdgeInsets.symmetric(horizontal: _transformSize(18.0)),
-            child: ListView.builder(
-              physics: const NeverScrollableScrollPhysics(),
-              controller: _controller,
-              scrollDirection: Axis.horizontal,
-              itemCount: widget.listCount,
-              itemBuilder: (context, index) {
-                int pageNumber = index + 1;
-                return Padding(
-                  padding: widget.listCount - pageNumber > 0
-                      ? EdgeInsetsDirectional.only(
-                          end: _transformSize(8.0),
-                        )
-                      : EdgeInsets.zero,
-                  child: IconButton(
-                    onPressed: () {
-                      if (pageNumber != selectedPage) {
-                        setState(() {
-                          selectedPage = pageNumber;
-                        });
-                        widget.onSelectCallback(pageNumber);
-                      }
-                    },
-                    icon: NumberButton(
-                      buttonText: (pageNumber).toString(),
-                      isSelected: selectedPage == pageNumber,
-                      size: widget.size,
-                      selectionColor: selectionColor,
-                      notSelectedColor: notSelectedColor,
-                    ),
-                  ),
-                );
-              },
-            ),
-          ),
+              width:
+                  widget.listCount > itemCount ? _transformSize(290.0) : null,
+              padding: EdgeInsets.symmetric(horizontal: _transformSize(18.0)),
+              child: SingleChildScrollView(
+                physics: const NeverScrollableScrollPhysics(),
+                controller: _controller,
+                scrollDirection: Axis.horizontal,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: List.generate(widget.listCount, (index) {
+                    int pageNumber = index + 1;
+                    return Padding(
+                      padding: widget.listCount - pageNumber > 0
+                          ? EdgeInsetsDirectional.only(end: _transformSize(8.0))
+                          : EdgeInsets.zero,
+                      child: GestureDetector(
+                          child: NumberButton(
+                        onTap: () {
+                          if (pageNumber != selectedPage) {
+                            setState(() {
+                              selectedPage = pageNumber;
+                            });
+                            widget.onSelectCallback(pageNumber);
+                          }
+                        },
+                        buttonText: (pageNumber).toString(),
+                        isSelected: selectedPage == pageNumber,
+                        size: widget.size,
+                        selectionColor: selectionColor,
+                        notSelectedColor: notSelectedColor,
+                      )),
+                    );
+                  }),
+                ),
+              )),
 
           ///Next index button
           AbsorbPointer(
@@ -132,10 +124,9 @@ class _FlutterPaginationState extends State<FlutterPagination>
                 widget.onSelectCallback(selectedPage);
                 if ((selectedPage - 1) % itemCount == 0) {
                   _controller.animateTo(
-                    ((selectedPage - 1) / itemCount) * _transformSize(259.9),
-                    duration: const Duration(milliseconds: 0),
-                    curve: Curves.linear,
-                  );
+                      ((selectedPage - 1) / itemCount) * _transformSize(259.9),
+                      duration: const Duration(milliseconds: 0),
+                      curve: Curves.linear);
                 }
               },
               icon: Icon(
@@ -153,16 +144,18 @@ class _FlutterPaginationState extends State<FlutterPagination>
 }
 
 class NumberButton extends StatelessWidget {
-  const NumberButton({
-    Key? key,
-    required this.buttonText,
-    required this.isSelected,
-    required this.size,
-    required this.selectionColor,
-    required this.notSelectedColor,
-  }) : super(key: key);
+  const NumberButton(
+      {Key? key,
+      required this.buttonText,
+      required this.onTap,
+      required this.isSelected,
+      required this.size,
+      required this.selectionColor,
+      required this.notSelectedColor})
+      : super(key: key);
 
   final String buttonText;
+  final void Function() onTap;
   final bool isSelected;
   final double size;
   final Color selectionColor;
@@ -174,23 +167,27 @@ class NumberButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: _transformSize(44.0),
-      width: _transformSize(44.0),
-      decoration: BoxDecoration(
-        color: isSelected ? selectionColor : notSelectedColor,
-        borderRadius: BorderRadius.circular(_transformSize(8.0)),
-      ),
-      child: Center(
-        child: Text(
-          buttonText,
-          style: TextStyle(
-            fontSize: _transformSize(18.0),
-            color: isSelected ? Colors.white : Colors.black,
+    return InkWell(
+      onTap: onTap,
+      hoverColor: Colors.transparent,
+      child: Container(
+        height: _transformSize(44.0),
+        width: _transformSize(44.0),
+        decoration: BoxDecoration(
+          color: isSelected ? selectionColor : notSelectedColor,
+          borderRadius: BorderRadius.circular(_transformSize(8.0)),
+        ),
+        child: Center(
+          child: Text(
+            buttonText,
+            style: TextStyle(
+              fontSize: _transformSize(18.0),
+              color: isSelected ? Colors.white : Colors.black,
+            ),
           ),
         ),
+        alignment: AlignmentDirectional.center,
       ),
-      alignment: AlignmentDirectional.center,
     );
   }
 }
