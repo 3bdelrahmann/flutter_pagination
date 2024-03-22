@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_pagination/src/number_button.dart';
 
 class FlutterPagination extends StatefulWidget {
   const FlutterPagination({
@@ -9,14 +10,16 @@ class FlutterPagination extends StatefulWidget {
     this.notSelectedColor,
     this.arrowsColor,
     this.size = 32.0,
+    this.itemCount,
   }) : super(key: key);
 
   final int listCount;
-  final void Function(int pageNumber) onSelectCallback;
+  final void Function(int page) onSelectCallback;
   final double size;
   final Color? selectionColor;
   final Color? notSelectedColor;
   final Color? arrowsColor;
+  final int? itemCount;
 
   @override
   State<FlutterPagination> createState() => _FlutterPaginationState();
@@ -33,7 +36,7 @@ class _FlutterPaginationState extends State<FlutterPagination> {
 
   @override
   Widget build(BuildContext context) {
-    int itemCount = 5;
+    int itemCount = widget.itemCount ?? 5;
 
     Color selectionColor =
         widget.selectionColor ?? Theme.of(context).primaryColor;
@@ -138,55 +141,6 @@ class _FlutterPaginationState extends State<FlutterPagination> {
             ),
           ),
         ],
-      ),
-    );
-  }
-}
-
-class NumberButton extends StatelessWidget {
-  const NumberButton(
-      {Key? key,
-      required this.buttonText,
-      required this.onTap,
-      required this.isSelected,
-      required this.size,
-      required this.selectionColor,
-      required this.notSelectedColor})
-      : super(key: key);
-
-  final String buttonText;
-  final void Function() onTap;
-  final bool isSelected;
-  final double size;
-  final Color selectionColor;
-  final Color notSelectedColor;
-
-  double _transformSize(double size) {
-    return (this.size * size) / 44.0;
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return InkWell(
-      onTap: onTap,
-      hoverColor: Colors.transparent,
-      child: Container(
-        height: _transformSize(44.0),
-        width: _transformSize(44.0),
-        decoration: BoxDecoration(
-          color: isSelected ? selectionColor : notSelectedColor,
-          borderRadius: BorderRadius.circular(_transformSize(8.0)),
-        ),
-        child: Center(
-          child: Text(
-            buttonText,
-            style: TextStyle(
-              fontSize: _transformSize(18.0),
-              color: isSelected ? Colors.white : Colors.black,
-            ),
-          ),
-        ),
-        alignment: AlignmentDirectional.center,
       ),
     );
   }
